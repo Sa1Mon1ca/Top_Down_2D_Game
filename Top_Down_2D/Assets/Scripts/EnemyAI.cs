@@ -10,7 +10,7 @@ public class Enemy : MonoBehaviour
     }
     
     private State state;
-    private EnemyPathFinding enemypathfinding;
+    private EnemyPathFinding enemyPathfinding;
 
     private void Awake()
     {
@@ -20,10 +20,23 @@ public class Enemy : MonoBehaviour
 
     private void Start()
     {
-        StartCoroutine(RomingRoutine());
+       StartCoroutine(RoamingRoutine());
     }
-    Private IEnumerator RoamingRoutine()
+    
+    private IEnumerator RoamingRoutine()
     {
-
+        while(state == State.Roaming)
+        {
+            Vector2 roamPosition = GetRoamingPosition();
+            enemyPathfinding.MoveTo(roamPosition);
+            yield return new WaitForSeconds(2f);
+        }
+        
     }
+
+    private Vector2 GetRoamingPosition()
+    {
+        return new Vector2(Random.Range(-1f, 1f), Random.Range(-1f, 1f)).normalized;
+    }
+
 }
